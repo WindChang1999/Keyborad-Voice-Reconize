@@ -3,16 +3,17 @@ import wave
 from time import localtime, time, strftime
 from os import path
 
-def Record():
+def Record(RECORD_SECONDS, FILENAME):
     ''' Record a RECORD_SECONDS wav audio, and return the .wav file path'''
     CHUNK = 1024
     FORMAT = paInt16
     CHANNELS = 2
     RATE = 44100
-    RECORD_SECONDS = 5
 
     # 用当前时间做文件名
-    WAVE_OUTPUT_FILENAME = strftime('%m_%d_%H_%M_%S', localtime(time())) + '.wav'
+    # WAVE_OUTPUT_FILENAME = strftime('%m_%d_%H_%M_%S', localtime(time())) + '.wav'
+
+    WAVE_OUTPUT_FILENAME = FILENAME
     OUTPUT_PATH = 'recordings'
     p = PyAudio()
     stream = p.open(format=FORMAT,
@@ -34,7 +35,7 @@ def Record():
     stream.close()
     p.terminate()
 
-    wf = wave.open(path.join(OUTPUT_PATH, WAVE_OUTPUT_FILENAME), 'wb')
+    wf = wave.open(path.join(OUTPUT_PATH, WAVE_OUTPUT_FILENAME+'.wav'), 'wb')
     wf.setnchannels(CHANNELS)
     wf.setsampwidth(p.get_sample_size(FORMAT))
     wf.setframerate(RATE)

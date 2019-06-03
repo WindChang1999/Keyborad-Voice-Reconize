@@ -8,15 +8,18 @@ def Get_fft(inputfile):
     x = np.transpose(x)
     x = x[0]
     x = x/max(abs(x))
-    n = len(x)    # 帧总数
     x1,x2 = epdt.epdt(x)
     idata=abs(np.fft.fft(x[x1:x2]))
+    t = x[x1:x2]
     data=idata[range(325)]
+    x = np.delete(x, range(x1 + 7800))
     x1, x2 = epdt.epdt(x)
+    t = np.vstack((t,x[x1:x2]))
     while x1>151:
         idata=abs(np.fft.fft(x[x1:x2]))
+        t = np.vstack((t, x[x1:x2]))
         data=np.vstack((data,idata[range(325)]))
-        x = np.delete(x, range(x1+10000))
+        x = np.delete(x, range(x1+7800))
         #n = len(x)
         x1, x2 = epdt.epdt(x)
-    return data
+    return data,t

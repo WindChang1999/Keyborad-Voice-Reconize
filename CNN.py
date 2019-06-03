@@ -13,7 +13,7 @@ class FFTCNN(nn.Module):
         # conv1, 81 - （kernel_size - 1） = 77
         self.conv1 = nn.Conv1d(1, 1, 5)
         self.fc1 = nn.Linear(77, 60)
-        self.fc2 = nn.Linear(60, 27)
+        self.fc2 = nn.Linear(60, 5)
     def forward(self, x):
         x = x.unsqueeze(1)
         x = self.maxpool(x)

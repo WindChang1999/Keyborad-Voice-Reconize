@@ -6,20 +6,15 @@ from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
 
 
-# MappingDict = {'0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9,
-#                    'a': 10, 'b': 11, 'c': 12, 'd': 13, 'space': 14, 'back': 15, 'enter': 16,
-#                'alt': 17, 'e': 18, 'f': 19, 'fn': 20, 'g': 21, 'q':22, 'r':23, 't':24, 'v':25,
-#                'w':26 }
-
-# MappingDict = {'p1': 0, 'p2': 1, 'q1': 2, 'q2': 3, 'b1': 4, 'b2': 5, 'z1':6, 'z2':7, 'd1':8, 'd2':9}
-MappingDict = {'p1': 0, 'p2': 0, 'q1': 1, 'q2': 1, 'b1': 2, 'b2': 2, 'z1': 3, 'z2': 3, 'd1': 4, 'd2': 4}
+MappingDict = {'p': 0, 'q': 1, 'b': 2, 'z': 3, 'd': 4, 'j': 5, '8': 6, 'h': 7, 't': 8}
+inv_Dict = {v:k for k, v in MappingDict.items()}
 
 def test(model):
     model.eval()
     torch.set_grad_enabled(False)
     cnt = 0
-    acclist = [0]*MappingDict.__len__()
-    class_sample_N = [0]*MappingDict.__len__()
+    acclist = [0]*len(inv_Dict)
+    class_sample_N = [0]*len(inv_Dict)
     for inputs, labels in dataloader:
         inputs = inputs.to(device)
         labels = labels.to(device)
@@ -47,7 +42,7 @@ def test(model):
     return now_acc, acclist, class_sample_N
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-dataset = FFTDataset(r'C:\Users\QinJingChang\PycharmProjects\Keyborad Voice Reconize\data\test1.xlsx')
+dataset = FFTDataset(r'C:\Users\QinJingChang\PycharmProjects\Keyborad Voice Reconize\data\val.xlsx')
 dataloader = DataLoader(dataset, batch_size=5, shuffle=True, drop_last=True)
 
 
@@ -57,17 +52,14 @@ sizelist = [dataset.FFT_N, 250, 150, 27]
 model = CNN.FFTCNN()
 model = model.to(device)
 print(model)
-model.load_state_dict(torch.load(r'C:\Users\QinJingChang\PycharmProjects\Keyborad Voice Reconize\Saved model\loss=3.930.tar'))
+model.load_state_dict(torch.load(r'C:\Users\QinJingChang\PycharmProjects\Keyborad Voice Reconize\Saved model\loss=9.396.tar'))
 model.eval()
-
-
-inv_Dict = {v:k for k,v in MappingDict.items()}
 
 acc, acclist, class_sample_N = test(model)
 
 print(sum(class_sample_N))
-acclist = [100 * acclist[i] / class_sample_N[i] for i in range(len(MappingDict) // 2)]
-class_name = [inv_Dict[i] for i in range(len(inv_Dict))]
+acclist = [100 * acclist[i] / class_sample_N[i] for i in range(len(inv_Dict))]
+class_name = [str(inv_Dict[i]) for i in range(len(inv_Dict))]
 
 print("acc = {:.4f}%".format(acc*100))
 print("acclist =")

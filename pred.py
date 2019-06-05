@@ -11,11 +11,12 @@ if __name__ == '__main__':
     #                'alt': 17, 'e': 18, 'f': 19, 'fn': 20, 'g': 21, 'q': 22, 'r': 23, 't': 24, 'v': 25,
     #                'w': 26}
 
-    MappingDict = {'p1': 0, 'p2': 0, 'q1': 1, 'q2': 1, 'b1': 2, 'b2': 2, 'z1': 3, 'z2': 3, 'd1': 4, 'd2': 4}
-    inv_Dict = {v: k for k, v in MappingDict.items()}
+    MappingDict = {'p': 0, 'q': 1, 'b': 2, 'z': 3, 'd': 4, 'j': 5, '8': 6, 'h': 7, 't': 8}
+    inv_Dict = {v:k for k, v in MappingDict.items()}
+
     # 输入模型的路径去加载模型
     # print("Please input model path:")
-    model_path = r'C:\Users\QinJingChang\PycharmProjects\Keyborad Voice Reconize\Saved model\loss=3.930.tar'
+    model_path = r'C:\Users\QinJingChang\PycharmProjects\Keyborad Voice Reconize\Saved model\2conv.tar'
     device = device("cuda:0" if cuda.is_available() else "cpu")
     model = CNN.FFTCNN()
     model.load_state_dict(load(model_path, map_location='cpu'))
@@ -28,10 +29,12 @@ if __name__ == '__main__':
 
     since = time()
     fft, _ = Get_fft(wavfile + '.wav')
+    fft = fft[:, 5:180]
     fft = tensor(fft).to(device).float()
     print(fft.shape)
 
     output = model(fft).cpu()
+    print("output tensor =", output)
     print("*"*60)
     # print("Output tensor =", output)
     lagest3 = [nlargest(3, list(output[i])) for i in range(len(output))]

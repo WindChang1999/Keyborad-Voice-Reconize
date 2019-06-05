@@ -2,7 +2,6 @@ import torch
 import torch.optim as optim
 import torch.optim.lr_scheduler
 import torch.nn as nn
-import network
 from fftdataset import FFTDataset
 from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
@@ -84,40 +83,42 @@ def training_model(model, CostFunction, optimizer, num_epochs=1000):
         acc_list.append(now_acc)
         loss_list.append(loss)
 
-        if min_loss > loss:
+        if now_acc > best_acc:
             best_acc = now_acc
             min_loss = loss
-            best_model_state_dict = copy.deepcopy(model.state_dict())
         print("Now Test accuracy = {:.4f}%".format(now_acc * 100))
         print("Now Test Loss = {}".format(loss))
         epoch_time = time.time() - epoch_time
-        print("Now epoch time = {}".format(epoch_time))
+        print("Now epoch time = {:.2f}s".format(epoch_time))
 
         cnt += 1
-        if cnt >= 100 and cnt % 50 == 0:
+        if cnt >= 60 and cnt % 20 == 0:
             print('-'*60)
             print("continue train? (Y/N)")
             s = input()
             if s == 'N':
                 break
 
+
     print('*' * 60)
     print("Training Complete")
     print("Best accuracy = {}%".format(best_acc * 100))
+
+    best_model_state_dict = copy.deepcopy(model.state_dict())
     model.load_state_dict(best_model_state_dict)
     torch.save(model.state_dict(),
                r'C:\Users\QinJingChang\PycharmProjects\Keyborad Voice Reconize\Saved model\\' + 'loss=' + str(min_loss)[:5] + '.tar')
-    plt.figure()
-    plt.plot(acc_list)
-    plt.plot(loss_list)
+    fig, ax = plt.subplots(2, 1)
+    ax[0].plot(acc_list)
+    ax[1].plot(loss_list)
     plt.show()
     return model
 
 if __name__ == '__main__':
     total_time = time.time()
     # -----用整个FFT训练的数据集加载------
-    train_excel_dir = r'C:\Users\QinJingChang\PycharmProjects\Keyborad Voice Reconize\data\train1.xlsx'
-    test_excel_dir = r'C:\Users\QinJingChang\PycharmProjects\Keyborad Voice Reconize\data\test1.xlsx'
+    train_excel_dir = r'C:\Users\QinJingChang\PycharmProjects\Keyborad Voice Reconize\data\train.xlsx'
+    test_excel_dir = r'C:\Users\QinJingChang\PycharmProjects\Keyborad Voice Reconize\data\val.xlsx'
     dataset = {'train': FFTDataset(train_excel_dir), 'test': FFTDataset(test_excel_dir)}
     # sizelist = [dataset['train'].FFT_N, 250, 150, 27]
 

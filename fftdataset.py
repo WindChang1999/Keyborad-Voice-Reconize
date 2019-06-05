@@ -9,7 +9,7 @@ def KeytypeToTarget(Keytype):
     #                'a': 10, 'b': 11, 'c': 12, 'd': 13, 'space': 14, 'back': 15, 'enter': 16,
     #                'alt': 17, 'e': 18, 'f': 19, 'fn': 20, 'g': 21, 'q': 22, 'r': 23, 't': 24, 'v': 25,
     #                'w': 26}
-    MappingDict = {'p1': 0, 'p2': 0, 'q1': 1, 'q2': 1, 'b1': 2, 'b2': 2, 'z1': 3, 'z2': 3, 'd1': 4, 'd2': 4}
+    MappingDict = {'p': 0, 'q': 1, 'b': 2, 'z': 3, 'd': 4, 'j': 5, '8': 6, 'h': 7, 't': 8}
     return MappingDict[Keytype]
 
 

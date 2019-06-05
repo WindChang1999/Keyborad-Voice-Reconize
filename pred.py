@@ -16,7 +16,7 @@ if __name__ == '__main__':
 
     # 输入模型的路径去加载模型
     # print("Please input model path:")
-    model_path = r'C:\Users\QinJingChang\PycharmProjects\Keyborad Voice Reconize\Saved model\2conv.tar'
+    model_path = r'C:\Users\QinJingChang\PycharmProjects\Keyborad Voice Reconize\Saved model\loss=9.396.tar'
     device = device("cuda:0" if cuda.is_available() else "cpu")
     model = CNN.FFTCNN()
     model.load_state_dict(load(model_path, map_location='cpu'))
@@ -29,7 +29,7 @@ if __name__ == '__main__':
 
     since = time()
     fft, _ = Get_fft(wavfile + '.wav')
-    fft = fft[:, 5:180]
+    # fft = fft[:, 5:180]
     fft = tensor(fft).to(device).float()
     print(fft.shape)
 

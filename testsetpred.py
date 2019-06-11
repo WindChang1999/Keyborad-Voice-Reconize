@@ -5,8 +5,7 @@ from fftdataset import FFTDataset
 from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
 
-
-MappingDict = {'p': 0, 'q': 1, 'b': 2, 'z': 3, 'd': 4, 'j': 5, '8': 6, 'h': 7, 't': 8}
+MappingDict = {'p': 0, 'q': 1, 'b': 2, 'z': 3, 'd': 4, 't': 5, '8': 6, 'h': 7}
 inv_Dict = {v:k for k, v in MappingDict.items()}
 
 def test(model):
@@ -52,7 +51,7 @@ sizelist = [dataset.FFT_N, 250, 150, 27]
 model = CNN.FFTCNN()
 model = model.to(device)
 print(model)
-model.load_state_dict(torch.load(r'C:\Users\QinJingChang\PycharmProjects\Keyborad Voice Reconize\Saved model\loss=9.396.tar'))
+model.load_state_dict(torch.load(r'C:\Users\QinJingChang\PycharmProjects\Keyborad Voice Reconize\Saved model\loss=5.953.tar'))
 model.eval()
 
 acc, acclist, class_sample_N = test(model)

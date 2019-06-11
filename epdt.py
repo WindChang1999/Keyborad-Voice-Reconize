@@ -17,7 +17,7 @@ def epdt(x):
     diffs = (tmp1 - tmp2) > 0.02 # 度量相邻两个采样点之间距离，如果大于门限0.02(经验值)，则1，否则0
     zcr = np.sum(signs * diffs, axis=1) # 行求和得到各帧的过零率；
     # 计算短时能量
-    amp = 15 * np.sum((enframe.enframe(lfilter([1 , -0.9375], [1,0], x), FrameLen, inc,1))** 2, axis=1) # 预加重
+    amp = 24 * np.sum((enframe.enframe(lfilter([1 , -0.9375], [1,0], x), FrameLen, inc,1))** 2, axis=1) # 预加重
 
     # 开始端点检测
     for n in range(len(zcr)): # Length（zcr）得到的是整个信号的帧数。

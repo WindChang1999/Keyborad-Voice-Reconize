@@ -80,7 +80,7 @@ def training_model(model, CostFunction, optimizer, num_epochs=1000):
         print('-' * 60)
         model = train(model, CostFunction, optimizer)
         now_acc, loss = test(model, CostFunction)
-        acc_list.append(now_acc)
+        acc_list.append(now_acc*100)
         loss_list.append(loss)
 
         if now_acc > best_acc:
@@ -106,8 +106,10 @@ def training_model(model, CostFunction, optimizer, num_epochs=1000):
 
     best_model_state_dict = copy.deepcopy(model.state_dict())
     model.load_state_dict(best_model_state_dict)
+    filename = 'loss=' + str(min_loss)[:5] + '.tar'
     torch.save(model.state_dict(),
-               r'C:\Users\QinJingChang\PycharmProjects\Keyborad Voice Reconize\Saved model\\' + 'loss=' + str(min_loss)[:5] + '.tar')
+               r'C:\Users\QinJingChang\PycharmProjects\Keyborad Voice Reconize\Saved model\\' + filename)
+    print("model file is", filename)
     fig, ax = plt.subplots(2, 1)
     ax[0].plot(acc_list)
     ax[1].plot(loss_list)
@@ -120,24 +122,12 @@ if __name__ == '__main__':
     train_excel_dir = r'C:\Users\QinJingChang\PycharmProjects\Keyborad Voice Reconize\data\train.xlsx'
     test_excel_dir = r'C:\Users\QinJingChang\PycharmProjects\Keyborad Voice Reconize\data\val.xlsx'
     dataset = {'train': FFTDataset(train_excel_dir), 'test': FFTDataset(test_excel_dir)}
-    # sizelist = [dataset['train'].FFT_N, 250, 150, 27]
-
-    # -----用FFT_peak训练的数据集加载------
-    # train_excel_dir = r'C:\Users\QinJingChang\PycharmProjects\Keyborad Voice Reconize\data\train_peak_arg.xls'
-    # test_excel_dir = r'C:\Users\QinJingChang\PycharmProjects\Keyborad Voice Reconize\data\val_peak_arg.xls'
-    # dataset = {'train': FFTPeakDataset(train_excel_dir), 'test': FFTPeakDataset(test_excel_dir)}
-    # sizelist_fftpeak = [dataset['train'].FFT_N, 50, 50, 27]
-
-    # print(dataset['train'].__getitem__(5))
-    # print(dataset['test'].__getitem__(5))
 
     # 这里num_worker = 4不能用, 不然会一直有多进程的错误
     dataloader = {x: DataLoader(dataset[x], batch_size=5, shuffle=True) for x in ['train', 'test']}
     print("testset.size =", dataset['test'].sample_N)
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-
-    # model = network.FFTnet(sizelist_fftpeak)
     model = CNN.FFTCNN()
 
     model = model.to(device)

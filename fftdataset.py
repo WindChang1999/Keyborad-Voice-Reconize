@@ -5,11 +5,9 @@ import numpy as np
 
 # 只分类了30个键
 def KeytypeToTarget(Keytype):
-    # MappingDict = {'0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9,
-    #                'a': 10, 'b': 11, 'c': 12, 'd': 13, 'space': 14, 'back': 15, 'enter': 16,
-    #                'alt': 17, 'e': 18, 'f': 19, 'fn': 20, 'g': 21, 'q': 22, 'r': 23, 't': 24, 'v': 25,
-    #                'w': 26}
-    MappingDict = {'p': 0, 'q': 1, 'b': 2, 'z': 3, 'd': 4, 'j': 5, '8': 6, 'h': 7, 't': 8}
+    # MappingDict = {'p': 0, 'q': 1, 'b': 2, 'z': 3, 'd': 4, 'j': 5, '8': 6, 'h': 7, 't': 8}
+    MappingDict = {'p': 0, 'q': 1, 'b': 2, 'z': 3, 'd': 4, 't': 5, '8': 6, 'h':7}
+    # MappingDict = {'j': 0, 't': 1, '8': 2, 'h': 3}
     return MappingDict[Keytype]
 
 
@@ -44,7 +42,7 @@ class FFTDataset(Dataset):
         else:
             Keytype = str(Keytype)
         Keytype = KeytypeToTarget(Keytype)
-        sample = (fft, Keytype)
+        sample = (fft[5:180], Keytype)
         return sample
 
 

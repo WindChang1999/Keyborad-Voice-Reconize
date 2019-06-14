@@ -9,7 +9,7 @@ if __name__ == '__main__':
     MappingDict = {'p': 0, 'q': 1, 'b': 2, 'z': 3, 'd': 4, 't': 5, '8': 6, 'h':7}
     inv_Dict = {v:k for k, v in MappingDict.items()}
 
-    model_path = r'C:\Users\QinJingChang\PycharmProjects\Keyborad Voice Reconize\Saved model\loss=5.953.tar'
+    model_path = r'C:\Users\QinJingChang\PycharmProjects\Keyborad Voice Reconize\Saved model\loss=6.740.tar'
     device = device("cuda:0" if cuda.is_available() else "cpu")
     model = CNN.FFTCNN()
     model.load_state_dict(load(model_path, map_location='cpu'))
@@ -18,7 +18,8 @@ if __name__ == '__main__':
 
     FILENAME = 'pred'
     ##### 接受录音、截取处理成fft
-    wavfile = Record(5, FILENAME)
+    # wavfile = Record(5, FILENAME)
+    wavfile = r'recordings\b1'
 
     since = time()
     fft, _ = Get_fft(wavfile + '.wav')
@@ -28,7 +29,7 @@ if __name__ == '__main__':
     fft = tensor(fft).to(device).float()
     print(fft.shape)
 
-    output = model(fft).cpu()
+    output, output_list = model(fft).cpu()
     print("output tensor =", output)
     print("*"*60)
 

@@ -6,8 +6,8 @@ import numpy as np
 # 只分类了30个键
 def KeytypeToTarget(Keytype):
     # MappingDict = {'p': 0, 'q': 1, 'b': 2, 'z': 3, 'd': 4, 'j': 5, '8': 6, 'h': 7, 't': 8}
-    MappingDict = {'p': 0, 'q': 1, 'b': 2, 'z': 3, 'd': 4, 't': 5, '8': 6, 'h':7}
-    # MappingDict = {'j': 0, 't': 1, '8': 2, 'h': 3}
+    # MappingDict = {'p': 0, 'q': 1, 'b': 2, 'z': 3, 'd': 4, 't': 5, '8': 6, 'h':7}
+    MappingDict = {'p': 0, 'q': 1, 'b': 2, 'z': 3, 'd': 4, 't': 5}
     return MappingDict[Keytype]
 
 

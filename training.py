@@ -10,7 +10,6 @@ import copy
 import time
 
 
-
 def train(model, CostFunction, optimizer):
     model.train()
     torch.set_grad_enabled(True)
@@ -92,7 +91,7 @@ def training_model(model, CostFunction, optimizer, num_epochs=1000):
         print("Now epoch time = {:.2f}s".format(epoch_time))
 
         cnt += 1
-        if cnt >= 60 and cnt % 20 == 0:
+        if cnt >= 100 and cnt % 50 == 0:
             print('-'*60)
             print("continue train? (Y/N)")
             s = input()
@@ -108,7 +107,7 @@ def training_model(model, CostFunction, optimizer, num_epochs=1000):
     model.load_state_dict(best_model_state_dict)
     filename = 'loss=' + str(min_loss)[:5] + '.tar'
     torch.save(model.state_dict(),
-               r'C:\Users\QinJingChang\PycharmProjects\Keyborad Voice Reconize\Saved model\\' + filename)
+               r'/Users/qinjingchang/Documents/GitHub/Keyborad-Voice-Reconize/Saved model/' + filename)
     print("model file is", filename)
     fig, ax = plt.subplots(2, 1)
     ax[0].plot(acc_list)
@@ -119,8 +118,8 @@ def training_model(model, CostFunction, optimizer, num_epochs=1000):
 if __name__ == '__main__':
     total_time = time.time()
     # -----用整个FFT训练的数据集加载------
-    train_excel_dir = r'C:\Users\QinJingChang\PycharmProjects\Keyborad Voice Reconize\data\train.xlsx'
-    test_excel_dir = r'C:\Users\QinJingChang\PycharmProjects\Keyborad Voice Reconize\data\val.xlsx'
+    train_excel_dir = r'/Users/qinjingchang/Documents/GitHub/Keyborad-Voice-Reconize/data/train.xlsx'
+    test_excel_dir = r'/Users/qinjingchang/Documents/GitHub/Keyborad-Voice-Reconize/data/val.xlsx'
     dataset = {'train': FFTDataset(train_excel_dir), 'test': FFTDataset(test_excel_dir)}
 
     # 这里num_worker = 4不能用, 不然会一直有多进程的错误
@@ -129,14 +128,15 @@ if __name__ == '__main__':
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     model = CNN.FFTCNN()
-
+    model.load_state_dict(torch.load(r'/Users/qinjingchang/Documents/GitHub/' +
+                                 r'Keyborad-Voice-Reconize/Saved model/loss=0.989.tar', map_location='cpu'))
     model = model.to(device)
     print(model)
 
     optimizer = optim.SGD(model.parameters(), lr=0.002, momentum=0.9)
     CostFunction = nn.CrossEntropyLoss()
     scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.1)
-    training_model(model, CostFunction, optimizer, num_epochs=100)
+    training_model(model, CostFunction, optimizer, num_epochs=300)
     total_time = time.time() - total_time
     print("-----" * 20 + "Run Complete" + "-----" * 20)
-    print("Total run time: {}".format(total_time))
+    print("Total run time: {:.2f}s".format(total_time))

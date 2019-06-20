@@ -7,7 +7,7 @@ import numpy as np
 def KeytypeToTarget(Keytype):
     # MappingDict = {'p': 0, 'q': 1, 'b': 2, 'z': 3, 'd': 4, 'j': 5, '8': 6, 'h': 7, 't': 8}
     # MappingDict = {'p': 0, 'q': 1, 'b': 2, 'z': 3, 'd': 4, 't': 5, '8': 6, 'h':7}
-    MappingDict = {'p': 0, 'q': 1, 'b': 2, 'z': 3, 'd': 4, 't': 5}
+    MappingDict = {'p': 0, 'q': 1, 'b': 2, 'z': 3, 'd': 4, 't': 5, 'm': 6, 'i': 7, 'k':8}
     return MappingDict[Keytype]
 
 
@@ -42,7 +42,7 @@ class FFTDataset(Dataset):
         else:
             Keytype = str(Keytype)
         Keytype = KeytypeToTarget(Keytype)
-        sample = (fft[5:180], Keytype)
+        sample = (fft[5:180] / torch.max(fft[5:180]), Keytype)
         return sample
 
 

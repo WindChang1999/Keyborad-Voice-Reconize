@@ -3,21 +3,23 @@ import matplotlib.pyplot as plt
 from scratch import Get_fft
 import xlsxwriter
 import os
+
 from Recording import Record
+
+
 if __name__ == '__main__':
-    # plt.ion()               # 交互模式
-    dir = r'C:\Users\QinJingChang\PycharmProjects\Keyborad Voice Reconize\selected data'
+    plt.ion()               # 交互模式
+    dir = r'/Users/qinjingchang/Documents/GitHub/Keyborad-Voice-Reconize/selected data'
     Keytype = input("Please input keytype:\n")
     filename = input("Please input filename:\n")
-    # Record_second = int(input("Please input record:\n"))
+    Record_second = int(input("Please input record:\n"))
 
-    # pfilename = Record(Record_second, filename)
-    pfilename = r'recordings\b1'
+    pfilename = Record(Record_second, filename)
+    # pfilename = r'recordings/z1'
     fs = 44100
     fft_list, t_list = np.array(Get_fft(os.path.join(pfilename+'.wav')))
     n_sample = len(fft_list)                                            # 截到的样本数量
-    n_fft = len(fft_list[0])                                            # fft 的点数
-
+    n_fft = 325                                            # fft 的点数
     print("fft_list = ", fft_list,
           "\nt_list = ", t_list)
     # f = np.array([fs/2/n_fft*i for i in range(n_fft)])                  # 横坐标
@@ -33,7 +35,8 @@ if __name__ == '__main__':
         # ax[0].set_ylim(0, 35)
         ax[1].plot(t, 'black')
         # ax[1].set_ylim(-1.2, 1.2)
-        plt.show()
+        plt.pause(0.5)
+        plt.close()
         # ch = msvcrt.getch()
         ch = input()
         if ch == '':

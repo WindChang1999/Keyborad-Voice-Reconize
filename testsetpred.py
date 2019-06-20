@@ -4,7 +4,8 @@ from fftdataset import FFTDataset
 from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
 
-MappingDict = {'p': 0, 'q': 1, 'b': 2, 'z': 3, 'd': 4, 't': 5}
+# MappingDict = {'p': 0, 'q': 1, 'b': 2, 'z': 3, 'd': 4, 't': 5}
+MappingDict = {'p': 0, 'q': 1, 'b': 2, 'z': 3, 'd': 4, 't': 5, 'm': 6, 'i': 7, 'k':8}
 # MappingDict = {'p': 0, 'q': 1, 'b': 2, 'z': 3, 'd': 4, 't': 5, '8': 6, 'h': 7}
 inv_Dict = {v:k for k, v in MappingDict.items()}
 
@@ -41,7 +42,7 @@ def test(model):
     return now_acc, acclist, class_sample_N
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-dataset = FFTDataset(r'C:\Users\QinJingChang\PycharmProjects\Keyborad Voice Reconize\selected data\d-6-13.xlsx')
+dataset = FFTDataset(r'/Users/qinjingchang/Documents/GitHub/Keyborad-Voice-Reconize/data/test.xlsx')
 dataloader = DataLoader(dataset, batch_size=5, shuffle=True, drop_last=True)
 
 
@@ -50,7 +51,8 @@ device = torch.device("cpu")
 model = CNN.FFTCNN()
 model = model.to(device)
 print(model)
-model.load_state_dict(torch.load(r'C:\Users\QinJingChang\PycharmProjects\Keyborad Voice Reconize\Saved model\loss=2.325.tar'))
+model.load_state_dict(torch.load(r'/Users/qinjingchang/Documents/GitHub/'+
+                                 r'Keyborad-Voice-Reconize/Saved model/loss=1.562.tar', map_location='cpu'))
 model.eval()
 
 acc, acclist, class_sample_N = test(model)

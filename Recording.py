@@ -5,7 +5,7 @@ from os import path
 
 def Record(RECORD_SECONDS, FILENAME):
     ''' Record a RECORD_SECONDS wav audio, and return the .wav file path'''
-    CHUNK = 1024
+    CHUNK = 512
     FORMAT = paInt16
     CHANNELS = 2
     RATE = 44100

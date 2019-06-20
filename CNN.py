@@ -28,8 +28,8 @@ class FFTCNN(nn.Module):
         self.maxpool = nn.MaxPool1d(3)
         # 58 - 3 = 55
         self.conv1 = nn.Conv1d(1, 1, 4)
-        self.fc1 = nn.Linear(55, 40)
-        self.fc2 = nn.Linear(40, 6)
+        self.fc1 = nn.Linear(55, 45)
+        self.fc2 = nn.Linear(45, 9)
 
     def forward(self, x):
         x = x.unsqueeze(1)

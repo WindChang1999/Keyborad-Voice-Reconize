@@ -16,6 +16,8 @@ def Get_fft(inputfile):
     x1, x2 = epdt.epdt(x)
     t = np.vstack((t,x[x1:x2]))
     while x1>151:
+        if len(x)-x1<650 :
+            x = np.append(x,np.zeros(1000))
         idata=abs(np.fft.fft(x[x1:x2]))
         t = np.vstack((t, x[x1:x2]))
         data=np.vstack((data,idata[range(325)]))
